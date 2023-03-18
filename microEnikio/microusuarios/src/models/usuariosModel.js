@@ -1,9 +1,10 @@
 const mysql = require('mysql2/promise');
 const connection = mysql.createPool({
+    port: 3307,
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'enikio'
+    database: 'enkio'
 });
 
 //para que los vea el admin. Al admin no le importan los postulados como tal.

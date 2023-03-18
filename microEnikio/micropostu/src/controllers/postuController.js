@@ -5,14 +5,25 @@ const postuModel = require('../models/postuModel');
 
 router.get('/postu/aptos/:id_apto', async (req, res) => {
     const id_apto = req.params.id_apto;
-    const response = await
-        axios.get(`http://localhost:3002/aptos/${id_apto}`);
-    console.log(response)
-    const id_apto2 = response.data.id_apto2
-    var result;
-    result = await postuModel.postuPorApto(id_apto2);
+    result = await postuModel.getPostulaciones(id_apto);
     res.json(result);
 });
+
+router.get('/postu/:id_apto', async (req, res) => {
+    const id_apto = req.params.id_apto;
+    result = await postuModel.postuPorApto(id_apto);
+    res.json(result);
+}); // funciona
+
+router.post('/postu/crearpostulacion', async (req, res) => {
+    const id_apto = req.body.id_apto;
+    const cc_postulado = req.body.cc_postulado;
+    const ocupacion = req.body.ocupacion;
+    const interes = req.body.interes;
+    var result = await postuModel.crearPostulacion(id_apto, cc_postulado, ocupacion, interes);
+    res.send("postulacion creada");
+}); // funciona
+
 
 //falta el post de postuPorApto
 
