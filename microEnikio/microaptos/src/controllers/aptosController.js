@@ -12,6 +12,11 @@ router.get('/aptos/usuarios/:cc', async (req, res) => {
   res.json(result);
 });
 
+router.get('/apartamentos', async (req, res) => {
+  var result = await aptosModel.getAllAptos();
+  res.json(result);
+});
+
 
 
 

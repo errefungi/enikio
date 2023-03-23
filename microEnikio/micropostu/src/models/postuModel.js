@@ -13,7 +13,7 @@ async function crearPostulacion(id_apto, cc_postulado, ocupacion, interes) {
 }
 
 async function postuPorApto(id_apto2) {
-    const result = await connection.query('SELECT * FROM postulaciones WHERE ide_apto = ?', id_apto2);
+    const result = await connection.query('SELECT * FROM postulaciones WHERE id_apto = ?', id_apto2);
     return result;
 }
 

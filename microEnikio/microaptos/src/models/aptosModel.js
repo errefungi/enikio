@@ -18,6 +18,11 @@ async function traerAptoArrendador(id_arrendador) {
     return result[0];
 }
 
+async function getAllAptos() {
+    const result = await connection.query('SELECT * FROM aptos WHERE coord is not NULL');
+    return result[0];
+}
+
 //En el mapa solo mostrará aquellos  que tienen hab_disponibles.  - Se tiene presente para el query de localizacion
 //- ** este realmente dependerá de la U que se escoja, hay que ver como se hace lo de data
 async function traerAptoMapa(hab_disponibles) {
@@ -67,10 +72,24 @@ async function getMetrics() {
     const num_aptos = await connection.query('select count(*) as total from aptos')
     const num_postu = await connection.query('select count(*) as total from postulaciones')
     const hab_dispo = await connection.query('select count(*) as total from aptos WHERE hab_disponibles > 2')
+    const arrendadores = await connection.query('select count(*) as total from usuarios WHERE rol ="arrendador"')
+    const aptos_icesi = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.3416907213039626 -76.53094179612705)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
+    const aptos_uao = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.353740400019329 -76.52048592608172)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
+    const aptos_antonio_jose = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.470593445052489 -76.52747705971524)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
+    const aptos_san_bue = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.343562195183882 -76.54438216439318)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
+    const aptos_libre = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.427567009699586 -76.54992013164862)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
+    const aptos_cooperativa = await connection.query("SELECT count(*) as total FROM   aptos WHERE   ROUND(ST_Distance_Sphere(coord, ST_GeomFromText('POINT(3.391257975610888 -76.55105966842426)'))) / 1000 <= 2 AND coord IS NOT NULL AND hab_disponibles > 0")
     const resultado = {
         "num_aptos": num_aptos[0][0]["total"],
         "num_postu": num_postu[0][0]["total"],
         "aptos_over_2_hab_dispo": hab_dispo[0][0]["total"],
+        "arrendadores": arrendadores[0][0]["total"],
+        "aptos_icesi": aptos_icesi[0][0]["total"],
+        "aptos_uao": aptos_uao[0][0]["total"],
+        "aptos_antonio_jose": aptos_antonio_jose[0][0]["total"],
+        "aptos_san_bue": aptos_san_bue[0][0]["total"],
+        "aptos_libre": aptos_libre[0][0]["total"],
+        "aptos_cooperativa": aptos_cooperativa[0][0]["total"],
     };
 
     return resultado;
@@ -85,5 +104,6 @@ module.exports = {
     getCoords,
     getUniversidad,
     getMetrics,
-    getCloseAptos
+    getCloseAptos,
+    getAllAptos
 };
